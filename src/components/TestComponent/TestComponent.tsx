@@ -3,22 +3,27 @@ import { useErrorBoundary } from "react-error-boundary";
 
 interface ITestComponent {
   url: string;
+  handleSetIsLoading: (bool: boolean) => void;
+  isLoading: boolean;
 }
 
-const TestComponent = ({ url }: ITestComponent) => {
+const TestComponent = ({
+  url,
+  handleSetIsLoading,
+  isLoading,
+}: ITestComponent) => {
   const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const { showBoundary } = useErrorBoundary();
 
   const fetchData = () => {
-    setIsLoading(true);
+    handleSetIsLoading(true);
     fetch(url)
       .then(async (response) => {
-        setIsLoading(false);
+        handleSetIsLoading(false);
         setData(await response.json());
       })
       .catch((error) => {
-        setIsLoading(false);
+        handleSetIsLoading(false);
         showBoundary(error);
       });
   };
